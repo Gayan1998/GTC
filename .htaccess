@@ -1,0 +1,57 @@
+# GTC Holdings — Apache configuration for the site root.
+# Works on cPanel shared hosting with mod_rewrite enabled.
+
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # API front controller: /api/... -> api/index.php
+    RewriteRule ^api(/.*)?$ api/index.php [QSA,L]
+
+    # Dynamic sitemap.
+    RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+    # Block direct web access to source and internal directories.
+    RewriteRule ^(frontend|database|docs|deployment|node_modules)(/|$) - [F,L]
+
+    # Serve existing files and directories as-is.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Missing static assets must 404, never fall back to the SPA document.
+    RewriteRule \.(js|mjs|css|map|png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|eot|json|xml|txt|webmanifest)$ - [L,R=404]
+
+    # Everything else is a React Router path.
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# Do not serve dotfiles (.env, .git, .htaccess, ...).
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Cache built assets for a year; they are content-hashed by Vite.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    <FilesMatch "\.(js|css|woff2?|ttf|eot|png|jpe?g|webp|avif|svg|ico)$">
+        ExpiresDefault "access plus 1 year"
+    </FilesMatch>
+    <FilesMatch "\.(html|json)$">
+        ExpiresDefault "access plus 0 seconds"
+    </FilesMatch>
+</IfModule>

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# After deployment, add an absolute sitemap URL for your domain, for example:
+# Sitemap: https://example.com/sitemap.xml

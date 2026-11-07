@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-navy;
+  }
+
+  ::selection {
+    background: rgba(23, 105, 210, 0.16);
+  }
+
+  :focus-visible {
+    outline: 2px solid #1769d2;
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-content px-5 sm:px-6 lg:px-8;
+  }
+
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-brand;
+  }
+
+  .prose-body {
+    @apply text-[15px] leading-7 text-muted;
+  }
+
+  /* Scroll reveal: elements fade up once when they enter the viewport. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden bg-mist;
+  }
+
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 1.4s infinite;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-[13px] font-semibold text-navy;
+  }
+
+  .field-input {
+    @apply w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink shadow-sm outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-brand focus:ring-2 focus:ring-brand/15;
+  }
+
+  .field-error {
+    @apply mt-1.5 text-[12.5px] font-medium text-red-600;
+  }
+}

@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Local configuration (contains database credentials)
+api/config/config.php
+api/config/config.local.php
+
+# Logs
+api/logs/*.log
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Built frontend output (regenerate with `npm run build` in frontend/)
+/index.html
+/assets/
+
+# Build/deploy artifacts
+/.deploy-stage/
+gtc-holdings-deploy.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp

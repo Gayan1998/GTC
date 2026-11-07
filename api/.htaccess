@@ -1,0 +1,13 @@
+# Route all API requests to the front controller.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Never expose configuration, source or logs over the web.
+    RewriteRule ^(config|core|services|routes|cli|logs)(/|$) - [F,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+Options -Indexes
